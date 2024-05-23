@@ -1,10 +1,12 @@
+import Gamecontroller from "../classes/gamecontroller";
+
 test("Starting the game with AI works correctly", () => {
   const testGameController = new Gamecontroller();
   testGameController.startGame("gary", false);
 
   expect(testGameController.getPlayerOneName()).toBe("Gary");
   expect(testGameController.getPlayerTwoName()).toBe("Computer");
-  expect(testGameController.playerOneTurn()).toBe(true);
+  expect(testGameController.isPlayerOneTurn()).toBe(true);
   expect(testGameController.getGameStatus()).toBe(true);
 });
 
@@ -14,7 +16,7 @@ test("Starting the game with two players works correctly", () => {
 
   expect(testGameController.getPlayerOneName()).toBe("Gary");
   expect(testGameController.getPlayerTwoName()).toBe("Frank");
-  expect(testGameController.playerOneTurn()).toBe(true);
+  expect(testGameController.isPlayerOneTurn()).toBe(true);
   expect(testGameController.getGameStatus()).toBe(true);
 });
 
@@ -24,7 +26,7 @@ test("Playing a turn works correctly", () => {
   // player 1 should attack player 2
   testGameController.playTurn(0, 2);
 
-  expect(testGameController.playerOneTurn()).toBe(false);
+  expect(testGameController.isPlayerOneTurn()).toBe(false);
 });
 
 test("Picking an invalid spot is handled correctly", () => {
