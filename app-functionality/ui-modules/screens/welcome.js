@@ -1,22 +1,8 @@
 export default class welcomeScreen {
   constructor() {
-    this.screen = this.drawScreen();
+    this.validInput = false;
+    this.playerName = "";
   }
-
-  // original html:
-  //<div class="welcome-screen">
-  //     <div class="header">
-  //     <img src="assets/battleship-logo.png" alt="Battleship logo">
-  // </div>
-  // <div class="start-info">
-  //     <form>
-  //         <label for="playerNameOne" class="playerNameOne">ENTER PLAYER NAME:</label>
-  //         <input type="text" id="playerNameOne" name="playerNameOne" class="playerNameOne" placeholder="BATTLESHIP COMBATANT" minlength="0" maxlength="10" required>
-  //         <span class="playerNameOneError"></span>
-  //         <button type="submit" class="submitNames">START GAME</button>
-  //     </form>
-  // </div>
-  // </div>
 
   createElements() {
     const main = document.querySelector("main");
@@ -51,7 +37,7 @@ export default class welcomeScreen {
     input.required = "true";
 
     const span = document.createElement("span");
-    span.className = "playerNameOne";
+    span.className = "playerNameOneError";
 
     const button = document.createElement("button");
     button.className = "submitNames";
@@ -66,13 +52,39 @@ export default class welcomeScreen {
     form.appendChild(label);
     form.appendChild(input);
     form.appendChild(span);
+    form.appendChild(button);
   }
 
   drawScreen() {
     this.createElements();
+    this.handleSubmit();
+  }
+
+  handleSubmit() {
+    const submitButton = document.querySelector(".submitNames");
+    const errorMsg = document.querySelector("span.playerNameOneError");
+    const input = document.querySelector("input#playerNameOne");
+    submitButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (input.validity.tooShort || input.value.length == 0) {
+        errorMsg.textContent = "NAME REQUIRED";
+      } else {
+        errorMsg.textContent = "";
+        this.validInput = true;
+        this.playerName = input.value;
+      }
+    });
   }
 
   getScreen() {
     return this.screen;
+  }
+
+  moveToNextScreen() {
+    return this.validInput;
+  }
+
+  getPlayer() {
+    return this.playerName;
   }
 }
