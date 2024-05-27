@@ -1,6 +1,7 @@
 * {
   padding: 0;
   margin: 0;
+  font-family: "Bebas Neue", sans-serif;
 }
 
 main {
@@ -22,38 +23,93 @@ main {
 }
 
 .welcome-screen {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 120px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 120px;
 }
 
 .start-info form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
 }
 
 label.playerNameOne {
-    color: white;
+  color: white;
 }
 
 input.playerNameOne {
-    height: 50px;
-    width: 216px;
-    padding: 6px;
-    border-radius: 5px;
+  height: 50px;
+  width: 216px;
+  padding: 6px;
+  border-radius: 5px;
 }
 
 span.playerNameOneError {
-    color: red;
+  color: red;
 }
 
 button.submitNames {
-    border: none;
-    border-radius: 5px;
-    padding: 20px;
-    background-color: grey;
+  border: none;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: grey;
+}
+
+.cells {
+  display: flex;
+  gap: 5px;
+  width: 385px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 20px;
+  border: solid 5px white;
+  cursor: crosshair;
+}
+
+.cell {
+  border: solid 1px white;
+  height: 32px;
+  width: 32px;
+  transition: 100ms;
+}
+
+.cell:hover {
+  background-color: grey;
+  transition: 500ms;
+}
+
+.game-screen {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+.dialogue-box {
+  width: 50%;
+  height: 64px;
+  background-color: #222222;
+  border-radius: 10px;
+  border: solid 3px white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.boards {
+  display: flex;
+  flex-direction: row;
+  gap: 120px;
+  text-align: center;
+}
+
+h2.playerOneName, h2.playerTwoName {
+  color: white;
+  margin-bottom: 20px;
 }

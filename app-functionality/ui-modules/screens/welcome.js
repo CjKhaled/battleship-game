@@ -60,6 +60,11 @@ export default class welcomeScreen {
     this.handleSubmit();
   }
 
+  clearScreen() {
+    const main = document.querySelector("main");
+    main.innerHTML = '';
+  }
+
   handleSubmit() {
     const submitButton = document.querySelector(".submitNames");
     const errorMsg = document.querySelector("span.playerNameOneError");
@@ -74,10 +79,6 @@ export default class welcomeScreen {
         this.playerName = input.value;
       }
     });
-  }
-
-  getScreen() {
-    return this.screen;
   }
 
   moveToNextScreen() {
