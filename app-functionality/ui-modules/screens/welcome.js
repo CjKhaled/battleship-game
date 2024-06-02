@@ -1,7 +1,5 @@
 export default class welcomeScreen {
   constructor() {
-    this.validInput = false;
-    this.playerName = "";
   }
 
   createElements() {
@@ -57,7 +55,6 @@ export default class welcomeScreen {
 
   drawScreen() {
     this.createElements();
-    this.handleSubmit();
   }
 
   clearScreen() {
@@ -75,17 +72,7 @@ export default class welcomeScreen {
         errorMsg.textContent = "NAME REQUIRED";
       } else {
         errorMsg.textContent = "";
-        this.validInput = true;
-        this.playerName = input.value;
       }
     });
-  }
-
-  moveToNextScreen() {
-    return this.validInput;
-  }
-
-  getPlayer() {
-    return this.playerName;
   }
 }

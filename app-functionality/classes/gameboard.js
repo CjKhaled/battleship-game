@@ -1,4 +1,4 @@
-import Ship from "./ship";
+import Ship from "./ship.js";
 
 export default class Gameboard {
   constructor() {
@@ -6,6 +6,7 @@ export default class Gameboard {
     this.missedAtacks = [];
     this.ships = this.createShips();
     this.gameOver = false;
+    this.latestAttack = 0;
   }
 
   createBoard() {
@@ -77,6 +78,7 @@ export default class Gameboard {
     if (this.board[x][y] === 0) {
       this.missedAtacks.push([x, y]);
       this.board[x][y] = 3;
+      this.latestAttack = { coords: `${x},${y}`, result: 3 };
       return true;
     }
 
@@ -92,7 +94,7 @@ export default class Gameboard {
       // we need to find which ship was hit
       for (const [key, value] of this.ships) {
         for (const coord of value) {
-          if (coord[0] === x && coord[1] === y) {
+          if (coord[0] == x && coord[1] == y) {
             ship = value[0];
             shipName = key;
           }
@@ -103,6 +105,7 @@ export default class Gameboard {
         .get(shipName)
         .filter((cord) => !(cord[0] == x && cord[0] == y));
       this.board[x][y] = 2;
+      this.latestAttack = { coords: `${x},${y}`, result: 2 };
       // and run the hit function on the ship object
       ship.hit();
       if (ship.isSunk()) {
@@ -121,5 +124,13 @@ export default class Gameboard {
     }
 
     return this.gameOver;
+  }
+
+  getLatestAttack() {
+    return this.latestAttack;
+  }
+
+  getCellFromCoords(x, y) {
+    return this.board[x][y];
   }
 }

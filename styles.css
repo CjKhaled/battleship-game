@@ -82,6 +82,22 @@ button.submitNames {
   transition: 500ms;
 }
 
+.cells.one > .cell.ship {
+  background-color: red;
+}
+
+.cells.two > .cell.ship.hit {
+  background-color: red;
+}
+
+.cell.ship.hit {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.cell.miss {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .game-screen {
   width: 100%;
   display: flex;
