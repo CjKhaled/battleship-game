@@ -1,23 +1,24 @@
 import Gamecontroller from "../classes/gamecontroller.js";
 import welcomeScreen from "./screens/welcome.js";
 import gameScreen from "./screens/game.js";
+import planScreen from "./screens/plan.js";
 
 class Gamedriver {
   constructor() {
     this.controller = new Gamecontroller();
     this.welcomeScreen = new welcomeScreen();
     this.gameScreen = new gameScreen();
+    this.planScreen = new planScreen();
   }
 
   updateCurrentScreen() {
     // at the start of this function, we should show the welcome screen
-    this.showGameScreen();
-    // after the input at this screen is accepted, we should show the game screen
+    this.showPlanScreen()
+    // after the input at this screen is accepted, we should show the plan screen
     this.addEventListeners();
   }
 
   addEventListeners() {
-    // we should be listening for a valid welcome submit
     // const submitButton = document.querySelector(".submitNames");
     // const errorMsg = document.querySelector("span.playerNameOneError");
     // const input = document.querySelector("input#playerNameOne");
@@ -27,13 +28,17 @@ class Gamedriver {
     //     errorMsg.textContent = "NAME REQUIRED";
     //   } else {
     //     errorMsg.textContent = "";
-    //     this.showGameScreen();
+    //     this.showPlanScreen();
     //   }
     // });
 
-    // and board clicks
-    // by default, we'll only have one player
-    // so when the player finishes a turn, the computer will finish one right after
+    const submitPlanBoard = document.getElementById('confirm')
+    submitPlanBoard.addEventListener('click', (e) => {
+        // I need to set the player 1 board to the temp board made in our
+        // plan object
+        // figure out how to do it later
+    })
+    
     const playerTwoCells = [...document.querySelectorAll(".cells.two > *")];
 
     playerTwoCells.forEach((cell) => {
@@ -80,6 +85,12 @@ class Gamedriver {
   showWelcomeScreen() {
     this.welcomeScreen.clearScreen();
     this.welcomeScreen.drawScreen();
+  }
+
+  showPlanScreen() {
+    this.planScreen.clearScreen();
+    this.planScreen.drawScreen();
+    this.planScreen.drawTempBoard();
   }
 
   showGameScreen() {

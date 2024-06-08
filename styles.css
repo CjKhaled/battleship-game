@@ -9,6 +9,7 @@ main {
   position: relative;
   width: 100vw;
   height: 100vh;
+  /* height: 100vh; */
   flex-direction: column;
   background: rgb(2, 0, 36);
   background: linear-gradient(
@@ -19,7 +20,6 @@ main {
     rgba(1, 0, 37, 1) 100%
   );
   overflow: auto;
-  padding-top: 40px;
 }
 
 .welcome-screen {
@@ -59,6 +59,10 @@ button.submitNames {
   background-color: grey;
 }
 
+.temp.cells {
+  cursor: pointer;
+}
+
 .cells {
   display: flex;
   gap: 5px;
@@ -70,12 +74,21 @@ button.submitNames {
   cursor: crosshair;
 }
 
-.cell {
+.cell, .temp-cell {
   border: solid 1px white;
   height: 32px;
   width: 32px;
   transition: 100ms;
 }
+
+.temp-cell.highlight.valid {
+  background-color: lightblue;
+}
+
+.temp-cell.highlight.invalid {
+  background-color: red;
+}
+
 
 .cell:hover {
   background-color: grey;
@@ -83,7 +96,7 @@ button.submitNames {
 }
 
 .cells.one > .cell.ship {
-  background-color: red;
+  background-color: lightblue;
 }
 
 .cells.two > .cell.ship.hit {
@@ -125,7 +138,88 @@ button.submitNames {
   text-align: center;
 }
 
+.plan-screen {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.plan-title {
+  color: white;
+  font-size: 50px;
+}
+
+.axis-buttons, .function-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.axis-button, .function-button {
+  padding: 10px;
+  background-color: transparent;
+  color: white;
+  border: solid 1px white;
+  transition: 500ms;
+  font-size: 25px;
+  border-radius: 5px;
+  max-width: 150px;
+  min-width: 150px;
+  text-align: center;
+}
+
+.axis-button:hover, .function-button:hover {
+  transform: translate(0, -10px);
+  transition: 500ms;
+}
+
+.function-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.axis-button.selected {
+  transform: translate(0, -10px);
+  transition: 500ms;
+  background-color: white;
+  color: black;
+}
+
+.plan-area {
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+  gap: 20px;
+  padding: 40px;
+}
+
+.draggable-ships {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  gap: 30px;
+}
+
+.battle-ship {
+  text-align: center;
+  padding: 20px;
+  border-radius: 3px;
+  border: 2px solid white;
+}
+
+.battle-ship.dragging {
+  background-color: grey;
+}
+
+.battle-ship.placed {
+  display: none;
+}
+
 h2.playerOneName, h2.playerTwoName {
   color: white;
   margin-bottom: 20px;
 }
+
