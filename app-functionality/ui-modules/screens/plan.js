@@ -55,6 +55,9 @@ export default class planScreen {
     const ruleThree = document.createElement('li');
     ruleThree.textContent = "Wait for dialogue to finish before clicking another spot on the next screen."
 
+    const ruleFour = document.createElement('li');
+    ruleFour.textContent = "Click random button to randomly place ships."
+
     const tempBoard = document.createElement("div");
     tempBoard.className = "temp-board";
 
@@ -131,6 +134,7 @@ export default class planScreen {
     rules.appendChild(ruleOne);
     rules.appendChild(ruleTwo);
     rules.appendChild(ruleThree);
+    rules.appendChild(ruleFour);
 
     planArea.appendChild(tempBoard);
     tempBoard.appendChild(tempCells);
@@ -142,8 +146,9 @@ export default class planScreen {
     draggableShips.appendChild(destroyer);
     planScreen.appendChild(functionButtons)
     functionButtons.appendChild(resetButton)
-    functionButtons.appendChild(confirmButton)
     functionButtons.appendChild(randomButton);
+    functionButtons.appendChild(confirmButton)
+    
   }
 
   drawScreen() {
@@ -443,6 +448,8 @@ export default class planScreen {
                 // updating board
                 const cellToPlaceShip = document.getElementById(`${row},${i}`)
                 this.boardToSend.getBoard()[row][i] = battleShips[index].id;
+                cellToPlaceShip.classList.add("highlight");
+                cellToPlaceShip.classList.add("valid");
                 cellToPlaceShip.classList.add("placed");
 
                 // add buffer zone
@@ -484,6 +491,8 @@ export default class planScreen {
               for (let i = row; i < row + shipLengths[index]; i++) {
                 const cellToPlaceShip = document.getElementById(`${i},${col}`)
                 this.boardToSend.getBoard()[i][col] = battleShips[index].id;
+                cellToPlaceShip.classList.add("highlight");
+                cellToPlaceShip.classList.add("valid");
                 cellToPlaceShip.classList.add("placed");
                 
                 // add buffer zone
