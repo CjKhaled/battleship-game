@@ -220,6 +220,7 @@ export default class Gameboard {
       ship.hit();
       if (ship.isSunk()) {
         this.ships.delete(shipName);
+        this.latestAttack.result = 4;
       }
 
       if (this.getGameOverStatus()) {

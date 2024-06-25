@@ -104,7 +104,7 @@ export default class gameScreen {
         this.textTyping(dialogue, controller.getPlayerOneName() + playerOneResult)
         this.updateBoard(controller.getPlayerTwoBoard().getBoard(), cell)
 
-        await this.delay(50 * (controller.getPlayerOneName() + playerOneResult).length + 1000);
+        await this.delay(50 * (controller.getPlayerOneName() + playerOneResult).length + 500);
         
         const playerTwoResult = controller.playTurn();
         dialogue.textContent = '';
@@ -112,7 +112,7 @@ export default class gameScreen {
         const cellTwo = document.getElementById(controller.getPlayerOneBoard().getLatestAttack().coords)
         this.updateBoard(controller.getPlayerOneBoard().getBoard(), cellTwo)
 
-        await this.delay(50 * (controller.getPlayerTwoName() + playerTwoResult).length + 1000);
+        await this.delay(50 * (controller.getPlayerTwoName() + playerTwoResult).length + 500);
         dialogue.textContent = '';
         this.textTyping(dialogue, 'AWAITING ORDERS...')
         playerTwoBoard.classList.toggle('disable')
