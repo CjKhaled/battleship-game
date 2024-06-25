@@ -1,7 +1,13 @@
 import Gameboard from "../../classes/gameboard.js";
 
 export default class planScreen {
-  constructor() {}
+  constructor() {
+    this.boardToSend = new Gameboard();
+  }
+
+  getCompleteBoard() {
+    return this.boardToSend;
+  }
 
   createElements() {
     const main = document.querySelector("main");
@@ -24,8 +30,30 @@ export default class planScreen {
     yAxisButton.className = "axis-button";
     yAxisButton.textContent = "Y AXIS";
 
+    const errorMsg = document.createElement("span");
+    errorMsg.className = "plan-error-msg";
+    errorMsg.textContent = "You need to place all ships."
+
     const planArea = document.createElement("div");
     planArea.className = "plan-area";
+
+    const planRules = document.createElement("div");
+    planRules.className = "plan-rules"
+    
+    const ruleTitle = document.createElement('h2')
+    ruleTitle.textContent = "How To Play"
+
+    const rules = document.createElement('ul');
+    rules.className = 'rules'
+
+    const ruleOne = document.createElement('li');
+    ruleOne.textContent = "Put a ship on the board by dragging it."
+
+    const ruleTwo = document.createElement('li');
+    ruleTwo.textContent = "Use the axis buttons to place horizontally or vertically before dragging."
+
+    const ruleThree = document.createElement('li');
+    ruleThree.textContent = "Wait for dialogue to finish before clicking another spot on the next screen."
 
     const tempBoard = document.createElement("div");
     tempBoard.className = "temp-board";
@@ -84,12 +112,26 @@ export default class planScreen {
     confirmButton.id = 'confirm'
     confirmButton.textContent = 'CONFIRM'
 
+    const randomButton = document.createElement('div')
+    randomButton.className = 'function-button'
+    randomButton.id = 'random'
+    randomButton.textContent = 'RANDOM'
+
     main.appendChild(planScreen);
     planScreen.appendChild(planTitle);
     planScreen.appendChild(axisButtons);
     axisButtons.appendChild(xAxisButton);
     axisButtons.appendChild(yAxisButton);
+    planScreen.appendChild(errorMsg);
     planScreen.appendChild(planArea);
+
+    planArea.appendChild(planRules);
+    planRules.appendChild(ruleTitle);
+    planRules.appendChild(rules);
+    rules.appendChild(ruleOne);
+    rules.appendChild(ruleTwo);
+    rules.appendChild(ruleThree);
+
     planArea.appendChild(tempBoard);
     tempBoard.appendChild(tempCells);
     planArea.appendChild(draggableShips);
@@ -101,6 +143,7 @@ export default class planScreen {
     planScreen.appendChild(functionButtons)
     functionButtons.appendChild(resetButton)
     functionButtons.appendChild(confirmButton)
+    functionButtons.appendChild(randomButton);
   }
 
   drawScreen() {
@@ -113,19 +156,16 @@ export default class planScreen {
   }
 
   drawTempBoard() {
-    const board = new Gameboard();
     const tempCells = document.querySelector("div.temp.cells");
     tempCells.innerHTML = "";
-    for (let x = 0; x < board.getBoard().length; x++) {
-      for (let y = 0; y < board.getBoard()[x].length; y++) {
+    for (let x = 0; x < this.boardToSend.getBoard().length; x++) {
+      for (let y = 0; y < this.boardToSend.getBoard()[x].length; y++) {
         const tempCell = document.createElement("div");
         tempCell.className = "temp-cell";
         tempCell.id = [x, y];
         tempCells.appendChild(tempCell);
       }
     }
-
-    this.addEventListeners();
   }
 
   addEventListeners() {
@@ -133,12 +173,16 @@ export default class planScreen {
     const dropCells = [...document.querySelectorAll(".temp-cell")];
     const axisButtons = [...document.querySelectorAll("button.axis-button")];
     const resetButton = document.getElementById('reset')
-    const confirmButton = document.getElementById('submit')
+    const randomButton = document.getElementById('random')
     let isXAxis = true;
     let elementBeingDragged = null;
 
     resetButton.addEventListener('click', (e) => {
         this.resetBoard()
+    })
+
+    randomButton.addEventListener('click', (e) => {
+      this.randomPlacements();
     })
 
     axisButtons.forEach((button) => {
@@ -203,7 +247,7 @@ export default class planScreen {
             rowCoord,
             colCoord,
             shipLength,
-            "place"
+            "place", shipID
           );
         } else
           this.updateHighlight(
@@ -246,7 +290,7 @@ export default class planScreen {
     return overlapped;
   }
 
-  updateHighlight(isXAxis, rowCoord, colCoord, shipLength, action) {
+  updateHighlight(isXAxis, rowCoord, colCoord, shipLength, action, shipName) {
     if (action == "add") {
       if (isXAxis) {
         // check overlapping ships as you shouldn't be place them
@@ -330,6 +374,7 @@ export default class planScreen {
           if (i > 9) break;
           else {
             const cellToPlaceShip = document.getElementById(`${rowCoord},${i}`);
+            this.boardToSend.getBoard()[rowCoord][i] = shipName;
             cellToPlaceShip.classList.add("placed");
           }
         }
@@ -338,6 +383,7 @@ export default class planScreen {
           if (i > 9) break;
           else {
             const cellToPlaceShip = document.getElementById(`${i},${colCoord}`);
+            this.boardToSend.getBoard()[i][colCoord] = shipName;
             cellToPlaceShip.classList.add("placed");
           }
         }
@@ -346,6 +392,10 @@ export default class planScreen {
   }
 
   resetBoard() {
+    this.boardToSend.resetBoard();
+    const errorMsg = document.querySelector(".plan-error-msg");
+    errorMsg.classList.remove("active")
+
     const tempCells = [...document.querySelectorAll('.temp-cell')]
     tempCells.forEach(cell => {
         cell.className = 'temp-cell'
@@ -355,5 +405,120 @@ export default class planScreen {
     battleShips.forEach(battleship => {
         battleship.className = 'battle-ship'
     })
+  }
+
+  randomPlacements() {
+    this.resetBoard();
+    const battleShips = [...document.querySelectorAll('.battle-ship')]
+    battleShips.forEach(battleship => {
+        battleship.className = 'battle-ship placed'
+    })
+    
+    // code from placeComputerShips function in gameboard module
+    const shipLengths = [5, 4, 3, 3, 2];
+    let index = 0;
+    while (index < 5) {
+      let placed = false;
+      // check valid position
+      while (!placed) {
+        const row = Math.floor(Math.random() * 10);
+        const col = Math.floor(Math.random() * 10);
+        const isXAxis = Math.random() < 0.5;
+        if (isXAxis) {
+          if (col + shipLengths[index] < 10) {
+            // check overlap
+            let space = 0;
+            for (let i = col; i < col + shipLengths[index]; i++) {
+              if (this.boardToSend.getBoard()[row][i] == 0) {
+                space++;
+              }
+            }
+
+            if (space == shipLengths[index]) {
+              placed = true;
+            }
+
+            if (placed) {
+              for (let i = col; i < col + shipLengths[index]; i++) {
+                // updating board
+                const cellToPlaceShip = document.getElementById(`${row},${i}`)
+                this.boardToSend.getBoard()[row][i] = battleShips[index].id;
+                cellToPlaceShip.classList.add("placed");
+
+                // add buffer zone
+                if (i == col) {
+                  if (col > 0) {
+                      if (this.boardToSend.getBoard()[row][col - 1] == 0) this.boardToSend.getBoard()[row][col - 1] = -1;
+                      if (row > 0 && this.boardToSend.getBoard()[row - 1][col - 1] == 0) this.boardToSend.getBoard()[row - 1][col - 1] = -1;
+                      if (row < 9 && this.boardToSend.getBoard()[row + 1][col - 1] == 0) this.boardToSend.getBoard()[row + 1][col - 1] = -1;
+                  }
+                }
+                if (i == col + shipLengths[index] - 1) {
+                  if (col + shipLengths[index] < 10) {
+                      if (this.boardToSend.getBoard()[row][col + shipLengths[index]] == 0) this.boardToSend.getBoard()[row][col + shipLengths[index]] = -1;
+                      if (row > 0 && this.boardToSend.getBoard()[row - 1][col + shipLengths[index]] == 0) this.boardToSend.getBoard()[row - 1][col + shipLengths[index]] = -1;
+                      if (row < 9 && this.boardToSend.getBoard()[row + 1][col + shipLengths[index]] == 0) this.boardToSend.getBoard()[row + 1][col + shipLengths[index]] = -1;
+                  }
+                }
+                if (row > 0 && this.boardToSend.getBoard()[row - 1][i] == 0) this.boardToSend.getBoard()[row - 1][i] = -1;
+                if (row < 9 && this.boardToSend.getBoard()[row + 1][i] == 0) this.boardToSend.getBoard()[row + 1][i] = -1;
+              }     
+              index++;
+            }
+          }
+        } else {
+          // y-axis
+          if (row + shipLengths[index] < 10) {
+            let space = 0;
+            for (let i = row; i < row + shipLengths[index]; i++) {
+              if (this.boardToSend.getBoard()[i][col] == 0) {
+                space++
+              }
+            }
+
+            if (space == shipLengths[index]) {
+              placed = true
+            }
+
+            if (placed) {
+              for (let i = row; i < row + shipLengths[index]; i++) {
+                const cellToPlaceShip = document.getElementById(`${i},${col}`)
+                this.boardToSend.getBoard()[i][col] = battleShips[index].id;
+                cellToPlaceShip.classList.add("placed");
+                
+                // add buffer zone
+                if (i == row) {
+                  if (row > 0) {
+                      if (this.boardToSend.getBoard()[row - 1][col] == 0) this.boardToSend.getBoard()[row - 1][col] = -1;
+                      if (col > 0 && this.boardToSend.getBoard()[row - 1][col - 1] == 0) this.boardToSend.getBoard()[row - 1][col - 1] = -1;
+                      if (col < 9 && this.boardToSend.getBoard()[row - 1][col + 1] == 0) this.boardToSend.getBoard()[row - 1][col + 1] = -1;
+                  }
+                }
+                if (i == row + shipLengths[index] - 1) {
+                  if (row + shipLengths[index] < 10) {
+                      if (this.boardToSend.getBoard()[row + shipLengths[index]][col] == 0) this.boardToSend.getBoard()[row + shipLengths[index]][col] = -1;
+                      if (col > 0 && this.boardToSend.getBoard()[row + shipLengths[index]][col - 1] == 0) this.boardToSend.getBoard()[row + shipLengths[index]][col - 1] = -1;
+                      if (col < 9 && this.boardToSend.getBoard()[row + shipLengths[index]][col + 1] == 0) this.boardToSend.getBoard()[row + shipLengths[index]][col + 1] = -1;
+                  }
+                } 
+                if (col > 0 && this.boardToSend.getBoard()[i][col - 1] == 0) this.boardToSend.getBoard()[i][col - 1] = -1;
+                if (col < 9 && this.boardToSend.getBoard()[i][col + 1] == 0) this.boardToSend.getBoard()[i][col + 1] = -1;
+              }
+
+              index++
+            }
+          }
+        } 
+      }
+    }
+
+    // clean up buffer spots 
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+          if (this.boardToSend.getBoard()[i][j] == -1) {
+              this.boardToSend.getBoard()[i][j] = 0;
+          }
+      }
+    }
   }
 }

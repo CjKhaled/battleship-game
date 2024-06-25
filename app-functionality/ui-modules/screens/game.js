@@ -49,6 +49,19 @@ export default class gameScreen {
     const playerTwoCells = document.createElement("div");
     playerTwoCells.className = "cells two";
 
+    const gameButtons = document.createElement('div');
+    gameButtons.className = 'game-buttons'
+
+    const cheatButton = document.createElement("button");
+    cheatButton.className = "function-button";
+    cheatButton.id = 'cheat';
+    cheatButton.textContent = 'CHEAT';
+
+    const restartButton = document.createElement("button");
+    restartButton.className = "function-button";
+    restartButton.id = 'restart';
+    restartButton.textContent = 'RESTART';
+
     main.appendChild(gameScreen);
     gameScreen.appendChild(logo);
     logo.appendChild(image);
@@ -61,6 +74,65 @@ export default class gameScreen {
     boards.appendChild(playerTwoBoard);
     playerTwoBoard.appendChild(playerTwoName);
     playerTwoBoard.appendChild(playerTwoCells);
+    gameScreen.appendChild(gameButtons);
+    gameButtons.appendChild(cheatButton);
+    gameButtons.appendChild(restartButton);
+  }
+  
+
+  addEventListeners(controller) {
+    const cheatButton = document.querySelector('#cheat');
+    cheatButton.addEventListener('click', (e) => {
+      const computerCells = document.querySelector('.cells.two');
+      computerCells.classList.toggle('show');
+    })
+
+    const playerTwoCells = [...document.querySelectorAll(".cells.two > *")];
+    const playerTwoBoard = document.querySelector(".cells.two")
+
+    playerTwoCells.forEach((cell) => {
+      cell.addEventListener("click", async () => {
+        // player won't be able to click again until dialogue is exhausted
+        playerTwoBoard.classList.toggle('disable')
+        
+        const playerOneResult = controller.playTurn(
+          cell.id[0],
+          cell.id[2]
+        );
+        const dialogue = document.querySelector('h2.dialogue-content');
+        dialogue.textContent = '';
+        this.textTyping(dialogue, controller.getPlayerOneName() + playerOneResult)
+        this.updateBoard(controller.getPlayerTwoBoard().getBoard(), cell)
+
+        await this.delay(50 * (controller.getPlayerOneName() + playerOneResult).length + 1000);
+        
+        const playerTwoResult = controller.playTurn();
+        dialogue.textContent = '';
+        this.textTyping(dialogue, controller.getPlayerTwoName() + playerTwoResult)
+        const cellTwo = document.getElementById(controller.getPlayerOneBoard().getLatestAttack().coords)
+        this.updateBoard(controller.getPlayerOneBoard().getBoard(), cellTwo)
+
+        await this.delay(50 * (controller.getPlayerTwoName() + playerTwoResult).length + 1000);
+        dialogue.textContent = '';
+        this.textTyping(dialogue, 'AWAITING ORDERS...')
+        playerTwoBoard.classList.toggle('disable')
+      });
+    });
+  }
+
+  async textTyping(element, text, index = 0) {
+    element.textContent += text[index];
+
+    if (index == text.length - 1) {
+        return
+    }
+
+    await this.delay(50);
+    this.textTyping(element, text, index + 1);
+  }
+
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   drawScreen() {

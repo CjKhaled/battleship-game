@@ -9,16 +9,12 @@ export default class Gamecontroller {
     this.gameRunning = false;
   }
 
-  startGame(name1, multiplePlayers, name2) {
-    // starting the game consists of creating our players, placing their
-    // ships, changing our booleans, and storing the players
-    this.playerOne = new Player(new Gameboard(), name1);
-    this.playerTwo = multiplePlayers
-      ? new Player(new Gameboard(), name2)
-      : new Player(new Gameboard(), "Computer");
+  startGame(name, gameBoardOne) {
+    this.playerOne = new Player(gameBoardOne, name);
+    this.playerTwo = new Player(new Gameboard(), "Computer");
 
     this.playerOne.getBoard().placeShips();
-    this.playerTwo.getBoard().placeShips();
+    this.playerTwo.getBoard().placeComputerShips();
 
     this.playerOneTurn = true;
     this.gameRunning = true;
@@ -80,9 +76,7 @@ export default class Gamecontroller {
     // game win case, successful case, and unsuccessful case
     if (result === "player wins") {
       this.gameRunning = false;
-      return this.playerOneTurn
-        ? this.playerOne.getName() + " wins!"
-        : this.playerTwo.getName() + " wins!";
+      return " wins!";
     } else if (result) {
       const latestAttack = enemyBoard.getLatestAttack()
       const returnResult = latestAttack.result == 2 ? "hit a ship" : "missed"

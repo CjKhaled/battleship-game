@@ -9,6 +9,14 @@ export default class Gameboard {
     this.latestAttack = 0;
   }
 
+  resetBoard() {
+    for (let x = 0; x < this.board.length; x++) {
+      for (let y = 0; y < this.board[x].length; y++) {
+          this.board[x][y] = 0;
+      }
+    }
+  }
+
   createBoard() {
     const board = [];
     for (let i = 0; i < 10; i++) {
@@ -18,13 +26,119 @@ export default class Gameboard {
     return board;
   }
 
+  placeComputerShips() {
+    const shipNames = [...this.ships.keys()];
+    const shipLengths = [5, 4, 3, 3, 2];
+    let index = 0;
+    while (index < 5) {
+      let placed = false;
+      // check valid position
+      while (!placed) {
+        const row = Math.floor(Math.random() * 10);
+        const col = Math.floor(Math.random() * 10);
+        const isXAxis = Math.random() < 0.5;
+        if (isXAxis) {
+          if (col + shipLengths[index] < 10) {
+            // check overlap
+            let space = 0;
+            for (let i = col; i < col + shipLengths[index]; i++) {
+              if (this.board[row][i] == 0) {
+                space++;
+              }
+            }
+
+            if (space == shipLengths[index]) {
+              placed = true;
+            }
+
+            if (placed) {
+              for (let i = col; i < col + shipLengths[index]; i++) {
+                this.board[row][i] = 1;
+                this.ships.get(shipNames[index]).push([row, i])
+
+                // add buffer zone
+                if (i == col) {
+                  if (col > 0) {
+                      if (this.board[row][col - 1] == 0) this.board[row][col - 1] = -1;
+                      if (row > 0 && this.board[row - 1][col - 1] == 0) this.board[row - 1][col - 1] = -1;
+                      if (row < 9 && this.board[row + 1][col - 1] == 0) this.board[row + 1][col - 1] = -1;
+                  }
+                }
+                if (i == col + shipLengths[index] - 1) {
+                  if (col + shipLengths[index] < 10) {
+                      if (this.board[row][col + shipLengths[index]] == 0) this.board[row][col + shipLengths[index]] = -1;
+                      if (row > 0 && this.board[row - 1][col + shipLengths[index]] == 0) this.board[row - 1][col + shipLengths[index]] = -1;
+                      if (row < 9 && this.board[row + 1][col + shipLengths[index]] == 0) this.board[row + 1][col + shipLengths[index]] = -1;
+                  }
+                }
+                if (row > 0 && this.board[row - 1][i] == 0) this.board[row - 1][i] = -1;
+                if (row < 9 && this.board[row + 1][i] == 0) this.board[row + 1][i] = -1;
+              }          
+              index++;
+            }
+          }
+        } else {
+          // y-axis
+          if (row + shipLengths[index] < 10) {
+            let space = 0;
+            for (let i = row; i < row + shipLengths[index]; i++) {
+              if (this.board[i][col] == 0) {
+                space++
+              }
+            }
+
+            if (space == shipLengths[index]) {
+              placed = true
+            }
+
+            if (placed) {
+              for (let i = row; i < row + shipLengths[index]; i++) {
+                this.board[i][col] = 1;
+                this.ships.get(shipNames[index]).push([i, col])
+                
+                // add buffer zone
+                if (i == row) {
+                  if (row > 0) {
+                      if (this.board[row - 1][col] == 0) this.board[row - 1][col] = -1;
+                      if (col > 0 && this.board[row - 1][col - 1] == 0) this.board[row - 1][col - 1] = -1;
+                      if (col < 9 && this.board[row - 1][col + 1] == 0) this.board[row - 1][col + 1] = -1;
+                  }
+                }
+                if (i == row + shipLengths[index] - 1) {
+                  if (row + shipLengths[index] < 10) {
+                      if (this.board[row + shipLengths[index]][col] == 0) this.board[row + shipLengths[index]][col] = -1;
+                      if (col > 0 && this.board[row + shipLengths[index]][col - 1] == 0) this.board[row + shipLengths[index]][col - 1] = -1;
+                      if (col < 9 && this.board[row + shipLengths[index]][col + 1] == 0) this.board[row + shipLengths[index]][col + 1] = -1;
+                  }
+                } 
+                if (col > 0 && this.board[i][col - 1] == 0) this.board[i][col - 1] = -1;
+                if (col < 9 && this.board[i][col + 1] == 0) this.board[i][col + 1] = -1;
+              }
+
+              index++
+            }
+          }
+        } 
+      }
+    }
+
+    // clean up buffer spots 
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+          if (this.board[i][j] == -1) {
+              this.board[i][j] = 0;
+          }
+      }
+    }
+  }
+
   createShips() {
     const ships = new Map();
-    ships.set("ship1", [new Ship(5, 0)]);
-    ships.set("ship2", [new Ship(4, 0)]);
-    ships.set("ship3", [new Ship(3, 0)]);
-    ships.set("ship4", [new Ship(3, 0)]);
-    ships.set("ship5", [new Ship(2, 0)]);
+    ships.set("carrier", [new Ship(5, 0)]);
+    ships.set("battleship", [new Ship(4, 0)]);
+    ships.set("cruiser", [new Ship(3, 0)]);
+    ships.set("submarine", [new Ship(3, 0)]);
+    ships.set("destroyer", [new Ship(2, 0)]);
 
     return ships;
   }
@@ -38,30 +152,26 @@ export default class Gameboard {
   }
 
   placeShips() {
-    // placing each ship individually
-    for (let i = 0; i < 5; i++) {
-      this.board[i][2] = 1;
-      this.ships.get("ship1").push([i, 2]);
-    }
-
-    for (let i = 4; i < 8; i++) {
-      this.board[i][6] = 1;
-      this.ships.get("ship2").push([i, 6]);
-    }
-
-    for (let i = 0; i < 3; i++) {
-      this.board[i][7] = 1;
-      this.ships.get("ship3").push([i, 7]);
-    }
-
-    for (let i = 1; i < 4; i++) {
-      this.board[7][i] = 1;
-      this.ships.get("ship4").push([7, i]);
-    }
-
-    for (let i = 4; i < 6; i++) {
-      this.board[9][i] = 1;
-      this.ships.get("ship5").push([9, i]);
+    // replace ship coordinate with 1 after identifying the ship
+    for (let x = 0; x < this.board.length; x++) {
+      for (let y = 0; y < this.board.length; y++) {
+        if (this.board[x][y] == "carrier") {
+          this.ships.get("carrier").push([x, y]);
+          this.board[x][y] = 1;
+        } else if (this.board[x][y] == "battleship") {
+          this.ships.get("battleship").push([x, y]);
+          this.board[x][y] = 1;
+        } else if (this.board[x][y] == "cruiser") {
+          this.ships.get("cruiser").push([x, y]);
+          this.board[x][y] = 1;
+        } else if (this.board[x][y] == "submarine") {
+          this.ships.get("submarine").push([x, y]);
+          this.board[x][y] = 1;
+        } else if (this.board[x][y] == "destroyer") {
+          this.ships.get("destroyer").push([x, y]);
+          this.board[x][y] = 1;
+        }
+      }
     }
   }
 
