@@ -20,6 +20,7 @@ main {
     rgba(1, 0, 37, 1) 100%
   );
   overflow: auto;
+  z-index: 0;
 }
 
 .welcome-screen {
@@ -29,6 +30,12 @@ main {
   align-items: center;
   gap: 120px;
   margin-top: 160px;
+  position: relative;
+  animation: fade-in 1000ms forwards;
+}
+
+.welcome-screen.close {
+  animation: fade-out 1000ms forwards;
 }
 
 .start-info form {
@@ -135,6 +142,7 @@ button.submitNames {
   align-items: center;
   gap: 60px;
   margin-top: 60px;
+  animation: fade-in 1000ms forwards;
 }
 
 .dialogue-box {
@@ -163,6 +171,11 @@ button.submitNames {
   align-items: center;
   gap: 40px;
   margin-top: 40px;
+  animation: fade-in 1000ms forwards;
+}
+
+.plan-screen.close {
+  animation: fade-out 1000ms forwards;
 }
 
 .plan-title {
@@ -264,3 +277,30 @@ h2.playerOneName, h2.playerTwoName {
   margin-bottom: 20px;
 }
 
+/* animations */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  100% {
+    opacity: 0;
+  }
+  0% {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}

@@ -23,13 +23,16 @@ class Gamedriver {
     const submitButton = document.querySelector(".submitNames");
     const errorMsg = document.querySelector("span.playerNameOneError");
     const input = document.querySelector("input#playerNameOne");
-    submitButton.addEventListener("click", (e) => {
+    const screen = document.querySelector('.welcome-screen')
+    submitButton.addEventListener("click", async (e) => {
       e.preventDefault();
       if (input.validity.tooShort || input.value.length == 0) {
         errorMsg.textContent = "NAME REQUIRED";
       } else {
         errorMsg.textContent = "";
         this.playerOne = input.value;
+        screen.classList.add('close')
+        await this.gameScreen.delay(1000);
         this.showPlanScreen();
       }
     });
@@ -41,7 +44,8 @@ class Gamedriver {
     this.planScreen.drawTempBoard();
     this.planScreen.addEventListeners();
     const submitPlanBoard = document.getElementById('confirm')
-    submitPlanBoard.addEventListener('click', (e) => {
+    const screen = document.querySelector('.plan-screen')
+    submitPlanBoard.addEventListener('click', async () => {
         let validSubmit = true;
         const check = [...document.querySelectorAll(".battle-ship")];
         const errorMsg = document.querySelector(".plan-error-msg");
@@ -52,6 +56,8 @@ class Gamedriver {
         })
 
         if (validSubmit) {
+          screen.classList.add('close')
+          await this.gameScreen.delay(1000);
           this.showGameScreen(this.planScreen.getCompleteBoard())
           errorMsg.classList.remove("active")
         } else {
