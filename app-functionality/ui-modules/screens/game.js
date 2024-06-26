@@ -92,30 +92,36 @@ export default class gameScreen {
 
     playerTwoCells.forEach((cell) => {
       cell.addEventListener("click", async () => {
-        // player won't be able to click again until dialogue is exhausted
-        playerTwoBoard.classList.toggle('disable')
-        
-        const playerOneResult = controller.playTurn(
-          cell.id[0],
-          cell.id[2]
-        );
-        const dialogue = document.querySelector('h2.dialogue-content');
-        dialogue.textContent = '';
-        this.textTyping(dialogue, controller.getPlayerOneName() + playerOneResult)
-        this.updateBoard(controller.getPlayerTwoBoard().getBoard(), cell)
+        // can't click the same cell twice
+        if (controller.getPlayerTwoBoard().getBoard()[cell.id[0]][cell.id[2]] == 0 ||  controller.getPlayerTwoBoard().getBoard()[cell.id[0]][cell.id[2]] == 1) {
+          // player won't be able to click again until dialogue is exhausted
+          playerTwoBoard.classList.toggle('disable')
+          
+          const playerOneResult = controller.playTurn(
+            cell.id[0],
+            cell.id[2]
+          );
+          const dialogue = document.querySelector('h2.dialogue-content');
+          dialogue.textContent = '';
+          this.textTyping(dialogue, controller.getPlayerOneName() + playerOneResult)
+          this.updateBoard(controller.getPlayerTwoBoard().getBoard(), cell)
 
-        await this.delay(50 * (controller.getPlayerOneName() + playerOneResult).length + 500);
-        
-        const playerTwoResult = controller.playTurn();
-        dialogue.textContent = '';
-        this.textTyping(dialogue, controller.getPlayerTwoName() + playerTwoResult)
-        const cellTwo = document.getElementById(controller.getPlayerOneBoard().getLatestAttack().coords)
-        this.updateBoard(controller.getPlayerOneBoard().getBoard(), cellTwo)
+          await this.delay(30 * (controller.getPlayerOneName() + playerOneResult).length + 500);
+          
+          const playerTwoResult = controller.playTurn();
+          dialogue.textContent = '';
+          this.textTyping(dialogue, controller.getPlayerTwoName() + playerTwoResult)
+          const cellTwo = document.getElementById(controller.getPlayerOneBoard().getLatestAttack().coords)
+          this.updateBoard(controller.getPlayerOneBoard().getBoard(), cellTwo)
 
-        await this.delay(50 * (controller.getPlayerTwoName() + playerTwoResult).length + 500);
-        dialogue.textContent = '';
-        this.textTyping(dialogue, 'AWAITING ORDERS...')
-        playerTwoBoard.classList.toggle('disable')
+          await this.delay(30 * (controller.getPlayerTwoName() + playerTwoResult).length + 500);
+          if (playerTwoResult !== " wins!") {
+            dialogue.textContent = '';
+            this.textTyping(dialogue, 'AWAITING ORDERS...')
+            await this.delay(1000)
+            playerTwoBoard.classList.toggle('disable')
+          } 
+        }
       });
     });
   }
@@ -127,7 +133,7 @@ export default class gameScreen {
         return
     }
 
-    await this.delay(50);
+    await this.delay(35);
     this.textTyping(element, text, index + 1);
   }
 

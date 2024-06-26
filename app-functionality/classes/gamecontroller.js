@@ -76,14 +76,31 @@ export default class Gamecontroller {
         }
       }
     } else if (this.targetMode) {
-      const index = Math.floor(Math.random() * this.computerTargets.length);
-      const result = this.computerTargets.splice(index, 1);
-      // once we hit a ship again, add coords
-      if (gameBoard[result[0][0]][result[0][1]] == 1) {
-        this.getAdjacentCells(result[0][0], result[0][1], gameBoard);
+      if (this.computerTargets.length > 0) {
+        debugger;
+        console.log(this.computerTargets);
+
+        const index = Math.floor(Math.random() * this.computerTargets.length);
+
+        console.log(index);
+
+        const result = this.computerTargets.splice(index, 1);
+
+        console.log(result[0])
+        // once we hit a ship again, add coords
+        if (gameBoard[result[0][0]][result[0][1]] == 1) {
+          this.getAdjacentCells(result[0][0], result[0][1], gameBoard);
+        }
+
+        console.log(this.computerTargets);
+
+        // [[0,0]]
+        return result[0];
+      } else {
+        this.targetMode = false;
+        this.huntMode = true;
+        return this.computerTurn(board);
       }
-      // [[0,0]]
-      return result[0];
     }
   }
 
@@ -92,11 +109,7 @@ export default class Gamecontroller {
       [row - 1, col],     
       [row + 1, col],     
       [row, col - 1],     
-      [row, col + 1],     
-      [row - 1, col - 1], 
-      [row - 1, col + 1], 
-      [row + 1, col - 1], 
-      [row + 1, col + 1]
+      [row, col + 1]
     ];
 
     for (const [r, c] of adjacentCells) {

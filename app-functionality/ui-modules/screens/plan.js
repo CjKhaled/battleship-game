@@ -53,7 +53,7 @@ export default class planScreen {
     ruleTwo.textContent = "Use the axis buttons to place horizontally or vertically before dragging."
 
     const ruleThree = document.createElement('li');
-    ruleThree.textContent = "Wait for dialogue to finish before clicking another spot on the next screen."
+    ruleThree.textContent = "Click the reset button to replace all your ships."
 
     const ruleFour = document.createElement('li');
     ruleFour.textContent = "Click random button to randomly place ships."

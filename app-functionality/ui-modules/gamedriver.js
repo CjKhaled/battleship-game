@@ -14,7 +14,7 @@ class Gamedriver {
 
   updateCurrentScreen() {
     // at the start of this function, we should show the welcome screen
-    this.showPlanScreen()
+    this.showWelcomeScreen()
   }
 
   showWelcomeScreen() {
