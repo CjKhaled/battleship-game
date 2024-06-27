@@ -58,23 +58,43 @@ test("Logs ships coordinates correctly", () => {
 
   // ship 1
   expect(testBoard.getShips().get("ship1")).toContainEqual([0, 2]);
-  expect(testBoard.getShips().get("ship1")).toContainEqual({ length: 5, numHits: 0, sunk: false });
+  expect(testBoard.getShips().get("ship1")).toContainEqual({
+    length: 5,
+    numHits: 0,
+    sunk: false,
+  });
 
   // ship 2
   expect(testBoard.getShips().get("ship2")).toContainEqual([4, 6]);
-  expect(testBoard.getShips().get("ship2")).toContainEqual({ length: 4, numHits: 0, sunk: false });
+  expect(testBoard.getShips().get("ship2")).toContainEqual({
+    length: 4,
+    numHits: 0,
+    sunk: false,
+  });
 
   // ship 3
   expect(testBoard.getShips().get("ship3")).toContainEqual([0, 7]);
-  expect(testBoard.getShips().get("ship3")).toContainEqual({ length: 3, numHits: 0, sunk: false });
+  expect(testBoard.getShips().get("ship3")).toContainEqual({
+    length: 3,
+    numHits: 0,
+    sunk: false,
+  });
 
   // ship 4
   expect(testBoard.getShips().get("ship4")).toContainEqual([7, 1]);
-  expect(testBoard.getShips().get("ship4")).toContainEqual({ length: 3, numHits: 0, sunk: false });
+  expect(testBoard.getShips().get("ship4")).toContainEqual({
+    length: 3,
+    numHits: 0,
+    sunk: false,
+  });
 
   // ship 5
   expect(testBoard.getShips().get("ship5")).toContainEqual([9, 4]);
-  expect(testBoard.getShips().get("ship5")).toContainEqual({ length: 2, numHits: 0, sunk: false });
+  expect(testBoard.getShips().get("ship5")).toContainEqual({
+    length: 2,
+    numHits: 0,
+    sunk: false,
+  });
 });
 
 test("Receive attack logs missed attacks", () => {
@@ -87,7 +107,7 @@ test("Receive attack logs missed attacks", () => {
 
   // a cell that was missed should be equal to 3
   expect(testBoard.getMissedAttacks()).toContainEqual([0, 0]);
-  expect(testBoard.getBoard()[0][0]).toBe(3)
+  expect(testBoard.getBoard()[0][0]).toBe(3);
 });
 
 test("Receive attack correctly hits a ship", () => {
@@ -148,6 +168,5 @@ test("Sinking all ships is recorded", () => {
   testBoard.receiveAttack(9, 4);
   testBoard.receiveAttack(9, 5);
 
-  expect(testBoard.getGameOverStatus()).toBe(true)
-
+  expect(testBoard.getGameOverStatus()).toBe(true);
 });

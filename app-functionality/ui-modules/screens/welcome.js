@@ -1,6 +1,5 @@
 export default class welcomeScreen {
-  constructor() {
-  }
+  constructor() {}
 
   createElements() {
     const main = document.querySelector("main");
@@ -59,7 +58,7 @@ export default class welcomeScreen {
 
   clearScreen() {
     const main = document.querySelector("main");
-    main.innerHTML = '';
+    main.innerHTML = "";
   }
 
   handleSubmit() {

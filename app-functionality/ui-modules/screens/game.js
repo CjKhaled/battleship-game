@@ -49,18 +49,18 @@ export default class gameScreen {
     const playerTwoCells = document.createElement("div");
     playerTwoCells.className = "cells two";
 
-    const gameButtons = document.createElement('div');
-    gameButtons.className = 'game-buttons'
+    const gameButtons = document.createElement("div");
+    gameButtons.className = "game-buttons";
 
     const cheatButton = document.createElement("button");
     cheatButton.className = "function-button";
-    cheatButton.id = 'cheat';
-    cheatButton.textContent = 'CHEAT';
+    cheatButton.id = "cheat";
+    cheatButton.textContent = "CHEAT";
 
     const restartButton = document.createElement("button");
     restartButton.className = "function-button";
-    restartButton.id = 'restart';
-    restartButton.textContent = 'RESTART';
+    restartButton.id = "restart";
+    restartButton.textContent = "RESTART";
 
     main.appendChild(gameScreen);
     gameScreen.appendChild(logo);
@@ -78,49 +78,71 @@ export default class gameScreen {
     gameButtons.appendChild(cheatButton);
     gameButtons.appendChild(restartButton);
   }
-  
 
   addEventListeners(controller) {
-    const cheatButton = document.querySelector('#cheat');
-    cheatButton.addEventListener('click', (e) => {
-      const computerCells = document.querySelector('.cells.two');
-      computerCells.classList.toggle('show');
-    })
+    const cheatButton = document.querySelector("#cheat");
+    cheatButton.addEventListener("click", (e) => {
+      const computerCells = document.querySelector(".cells.two");
+      computerCells.classList.toggle("show");
+    });
+
+    const restartButton = document.querySelector("#restart");
+    restartButton.addEventListener("click", (e) => {
+      const result = confirm(
+        "Are you sure you want to restart? You will lose your progress."
+      );
+      if (result) {
+        location.reload();
+      }
+    });
 
     const playerTwoCells = [...document.querySelectorAll(".cells.two > *")];
-    const playerTwoBoard = document.querySelector(".cells.two")
+    const playerTwoBoard = document.querySelector(".cells.two");
 
     playerTwoCells.forEach((cell) => {
       cell.addEventListener("click", async () => {
         // can't click the same cell twice
-        if (controller.getPlayerTwoBoard().getBoard()[cell.id[0]][cell.id[2]] == 0 ||  controller.getPlayerTwoBoard().getBoard()[cell.id[0]][cell.id[2]] == 1) {
+        if (
+          controller.getPlayerTwoBoard().getBoard()[cell.id[0]][cell.id[2]] ==
+            0 ||
+          controller.getPlayerTwoBoard().getBoard()[cell.id[0]][cell.id[2]] == 1
+        ) {
           // player won't be able to click again until dialogue is exhausted
-          playerTwoBoard.classList.toggle('disable')
-          
-          const playerOneResult = controller.playTurn(
-            cell.id[0],
-            cell.id[2]
+          playerTwoBoard.classList.toggle("disable");
+
+          const playerOneResult = controller.playTurn(cell.id[0], cell.id[2]);
+          const dialogue = document.querySelector("h2.dialogue-content");
+          dialogue.textContent = "";
+          this.textTyping(
+            dialogue,
+            controller.getPlayerOneName() + playerOneResult
           );
-          const dialogue = document.querySelector('h2.dialogue-content');
-          dialogue.textContent = '';
-          this.textTyping(dialogue, controller.getPlayerOneName() + playerOneResult)
-          this.updateBoard(controller.getPlayerTwoBoard().getBoard(), cell)
+          this.updateBoard(controller.getPlayerTwoBoard().getBoard(), cell);
 
-          await this.delay(30 * (controller.getPlayerOneName() + playerOneResult).length + 500);
-          
+          await this.delay(
+            30 * (controller.getPlayerOneName() + playerOneResult).length + 500
+          );
+
           const playerTwoResult = controller.playTurn();
-          dialogue.textContent = '';
-          this.textTyping(dialogue, controller.getPlayerTwoName() + playerTwoResult)
-          const cellTwo = document.getElementById(controller.getPlayerOneBoard().getLatestAttack().coords)
-          this.updateBoard(controller.getPlayerOneBoard().getBoard(), cellTwo)
+          dialogue.textContent = "";
+          this.textTyping(
+            dialogue,
+            controller.getPlayerTwoName() + playerTwoResult
+          );
+          const cellTwo = document.getElementById(
+            controller.getPlayerOneBoard().getLatestAttack().coords
+          );
+          this.updateBoard(controller.getPlayerOneBoard().getBoard(), cellTwo);
 
-          await this.delay(30 * (controller.getPlayerTwoName() + playerTwoResult).length + 500);
+          await this.delay(
+            30 * (controller.getPlayerTwoName() + playerTwoResult).length + 500
+          );
           if (playerTwoResult !== " wins!") {
-            dialogue.textContent = '';
-            this.textTyping(dialogue, 'AWAITING ORDERS...')
-            await this.delay(1000)
-            playerTwoBoard.classList.toggle('disable')
-          } 
+            dialogue.textContent = "";
+            this.textTyping(dialogue, "AWAITING ORDERS...");
+            await this.delay(1000);
+            playerTwoBoard.classList.toggle("disable");
+          }
         }
       });
     });
@@ -130,7 +152,7 @@ export default class gameScreen {
     element.textContent += text[index];
 
     if (index == text.length - 1) {
-        return
+      return;
     }
 
     await this.delay(35);
@@ -138,7 +160,7 @@ export default class gameScreen {
   }
 
   delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   drawScreen() {
@@ -179,11 +201,9 @@ export default class gameScreen {
   }
 
   updateBoard(board, cell) {
-    const x = cell.id[0]
-    const y = cell.id[2]
-    cell.className = board[x][y] == 2
-    ? "cell ship hit"
-    : "cell miss";
+    const x = cell.id[0];
+    const y = cell.id[2];
+    cell.className = board[x][y] == 2 ? "cell ship hit" : "cell miss";
 
     if (cell.className == "cell miss") {
       cell.innerHTML =

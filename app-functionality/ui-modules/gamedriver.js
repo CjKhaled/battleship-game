@@ -9,12 +9,12 @@ class Gamedriver {
     this.welcomeScreen = new welcomeScreen();
     this.gameScreen = new gameScreen();
     this.planScreen = new planScreen();
-    this.playerOne = 'N/A'
+    this.playerOne = "N/A";
   }
 
   updateCurrentScreen() {
     // at the start of this function, we should show the welcome screen
-    this.showWelcomeScreen()
+    this.showWelcomeScreen();
   }
 
   showWelcomeScreen() {
@@ -23,7 +23,7 @@ class Gamedriver {
     const submitButton = document.querySelector(".submitNames");
     const errorMsg = document.querySelector("span.playerNameOneError");
     const input = document.querySelector("input#playerNameOne");
-    const screen = document.querySelector('.welcome-screen')
+    const screen = document.querySelector(".welcome-screen");
     submitButton.addEventListener("click", async (e) => {
       e.preventDefault();
       if (input.validity.tooShort || input.value.length == 0) {
@@ -31,7 +31,7 @@ class Gamedriver {
       } else {
         errorMsg.textContent = "";
         this.playerOne = input.value;
-        screen.classList.add('close')
+        screen.classList.add("close");
         await this.gameScreen.delay(1000);
         this.showPlanScreen();
       }
@@ -43,27 +43,27 @@ class Gamedriver {
     this.planScreen.drawScreen();
     this.planScreen.drawTempBoard();
     this.planScreen.addEventListeners();
-    const submitPlanBoard = document.getElementById('confirm')
-    const screen = document.querySelector('.plan-screen')
-    submitPlanBoard.addEventListener('click', async () => {
-        let validSubmit = true;
-        const check = [...document.querySelectorAll(".battle-ship")];
-        const errorMsg = document.querySelector(".plan-error-msg");
-        check.forEach((ship) => {
-          if (!ship.className.includes("placed")) {
-            validSubmit = false;
-          }
-        })
-
-        if (validSubmit) {
-          screen.classList.add('close')
-          await this.gameScreen.delay(1000);
-          this.showGameScreen(this.planScreen.getCompleteBoard())
-          errorMsg.classList.remove("active")
-        } else {
-          errorMsg.classList.add("active")
+    const submitPlanBoard = document.getElementById("confirm");
+    const screen = document.querySelector(".plan-screen");
+    submitPlanBoard.addEventListener("click", async () => {
+      let validSubmit = true;
+      const check = [...document.querySelectorAll(".battle-ship")];
+      const errorMsg = document.querySelector(".plan-error-msg");
+      check.forEach((ship) => {
+        if (!ship.className.includes("placed")) {
+          validSubmit = false;
         }
-    })
+      });
+
+      if (validSubmit) {
+        screen.classList.add("close");
+        await this.gameScreen.delay(1000);
+        this.showGameScreen(this.planScreen.getCompleteBoard());
+        errorMsg.classList.remove("active");
+      } else {
+        errorMsg.classList.add("active");
+      }
+    });
   }
 
   showGameScreen(board) {

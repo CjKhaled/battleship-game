@@ -12,7 +12,7 @@ export default class Gameboard {
   resetBoard() {
     for (let x = 0; x < this.board.length; x++) {
       for (let y = 0; y < this.board[x].length; y++) {
-          this.board[x][y] = 0;
+        this.board[x][y] = 0;
       }
     }
   }
@@ -54,26 +54,40 @@ export default class Gameboard {
             if (placed) {
               for (let i = col; i < col + shipLengths[index]; i++) {
                 this.board[row][i] = 1;
-                this.ships.get(shipNames[index]).push([row, i])
+                this.ships.get(shipNames[index]).push([row, i]);
 
                 // add buffer zone
                 if (i == col) {
                   if (col > 0) {
-                      if (this.board[row][col - 1] == 0) this.board[row][col - 1] = -1;
-                      if (row > 0 && this.board[row - 1][col - 1] == 0) this.board[row - 1][col - 1] = -1;
-                      if (row < 9 && this.board[row + 1][col - 1] == 0) this.board[row + 1][col - 1] = -1;
+                    if (this.board[row][col - 1] == 0)
+                      this.board[row][col - 1] = -1;
+                    if (row > 0 && this.board[row - 1][col - 1] == 0)
+                      this.board[row - 1][col - 1] = -1;
+                    if (row < 9 && this.board[row + 1][col - 1] == 0)
+                      this.board[row + 1][col - 1] = -1;
                   }
                 }
                 if (i == col + shipLengths[index] - 1) {
                   if (col + shipLengths[index] < 10) {
-                      if (this.board[row][col + shipLengths[index]] == 0) this.board[row][col + shipLengths[index]] = -1;
-                      if (row > 0 && this.board[row - 1][col + shipLengths[index]] == 0) this.board[row - 1][col + shipLengths[index]] = -1;
-                      if (row < 9 && this.board[row + 1][col + shipLengths[index]] == 0) this.board[row + 1][col + shipLengths[index]] = -1;
+                    if (this.board[row][col + shipLengths[index]] == 0)
+                      this.board[row][col + shipLengths[index]] = -1;
+                    if (
+                      row > 0 &&
+                      this.board[row - 1][col + shipLengths[index]] == 0
+                    )
+                      this.board[row - 1][col + shipLengths[index]] = -1;
+                    if (
+                      row < 9 &&
+                      this.board[row + 1][col + shipLengths[index]] == 0
+                    )
+                      this.board[row + 1][col + shipLengths[index]] = -1;
                   }
                 }
-                if (row > 0 && this.board[row - 1][i] == 0) this.board[row - 1][i] = -1;
-                if (row < 9 && this.board[row + 1][i] == 0) this.board[row + 1][i] = -1;
-              }          
+                if (row > 0 && this.board[row - 1][i] == 0)
+                  this.board[row - 1][i] = -1;
+                if (row < 9 && this.board[row + 1][i] == 0)
+                  this.board[row + 1][i] = -1;
+              }
               index++;
             }
           }
@@ -83,51 +97,65 @@ export default class Gameboard {
             let space = 0;
             for (let i = row; i < row + shipLengths[index]; i++) {
               if (this.board[i][col] == 0) {
-                space++
+                space++;
               }
             }
 
             if (space == shipLengths[index]) {
-              placed = true
+              placed = true;
             }
 
             if (placed) {
               for (let i = row; i < row + shipLengths[index]; i++) {
                 this.board[i][col] = 1;
-                this.ships.get(shipNames[index]).push([i, col])
-                
+                this.ships.get(shipNames[index]).push([i, col]);
+
                 // add buffer zone
                 if (i == row) {
                   if (row > 0) {
-                      if (this.board[row - 1][col] == 0) this.board[row - 1][col] = -1;
-                      if (col > 0 && this.board[row - 1][col - 1] == 0) this.board[row - 1][col - 1] = -1;
-                      if (col < 9 && this.board[row - 1][col + 1] == 0) this.board[row - 1][col + 1] = -1;
+                    if (this.board[row - 1][col] == 0)
+                      this.board[row - 1][col] = -1;
+                    if (col > 0 && this.board[row - 1][col - 1] == 0)
+                      this.board[row - 1][col - 1] = -1;
+                    if (col < 9 && this.board[row - 1][col + 1] == 0)
+                      this.board[row - 1][col + 1] = -1;
                   }
                 }
                 if (i == row + shipLengths[index] - 1) {
                   if (row + shipLengths[index] < 10) {
-                      if (this.board[row + shipLengths[index]][col] == 0) this.board[row + shipLengths[index]][col] = -1;
-                      if (col > 0 && this.board[row + shipLengths[index]][col - 1] == 0) this.board[row + shipLengths[index]][col - 1] = -1;
-                      if (col < 9 && this.board[row + shipLengths[index]][col + 1] == 0) this.board[row + shipLengths[index]][col + 1] = -1;
+                    if (this.board[row + shipLengths[index]][col] == 0)
+                      this.board[row + shipLengths[index]][col] = -1;
+                    if (
+                      col > 0 &&
+                      this.board[row + shipLengths[index]][col - 1] == 0
+                    )
+                      this.board[row + shipLengths[index]][col - 1] = -1;
+                    if (
+                      col < 9 &&
+                      this.board[row + shipLengths[index]][col + 1] == 0
+                    )
+                      this.board[row + shipLengths[index]][col + 1] = -1;
                   }
-                } 
-                if (col > 0 && this.board[i][col - 1] == 0) this.board[i][col - 1] = -1;
-                if (col < 9 && this.board[i][col + 1] == 0) this.board[i][col + 1] = -1;
+                }
+                if (col > 0 && this.board[i][col - 1] == 0)
+                  this.board[i][col - 1] = -1;
+                if (col < 9 && this.board[i][col + 1] == 0)
+                  this.board[i][col + 1] = -1;
               }
 
-              index++
+              index++;
             }
           }
-        } 
+        }
       }
     }
 
-    // clean up buffer spots 
+    // clean up buffer spots
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-          if (this.board[i][j] == -1) {
-              this.board[i][j] = 0;
-          }
+        if (this.board[i][j] == -1) {
+          this.board[i][j] = 0;
+        }
       }
     }
   }

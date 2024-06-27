@@ -52,7 +52,7 @@ export default class Gamecontroller {
     // target mode where the bot attacks adjacent cells
     // the bot will come out of target mode once they sink a ship
     const gameBoard = board.getBoard();
-    
+
     if (this.huntMode) {
       let validCoords = false;
       const missedCoords = board.getMissedAttacks();
@@ -78,22 +78,12 @@ export default class Gamecontroller {
     } else if (this.targetMode) {
       if (this.computerTargets.length > 0) {
         debugger;
-        console.log(this.computerTargets);
-
         const index = Math.floor(Math.random() * this.computerTargets.length);
-
-        console.log(index);
-
         const result = this.computerTargets.splice(index, 1);
-
-        console.log(result[0])
         // once we hit a ship again, add coords
         if (gameBoard[result[0][0]][result[0][1]] == 1) {
           this.getAdjacentCells(result[0][0], result[0][1], gameBoard);
         }
-
-        console.log(this.computerTargets);
-
         // [[0,0]]
         return result[0];
       } else {
@@ -106,14 +96,20 @@ export default class Gamecontroller {
 
   getAdjacentCells(row, col, gameBoard) {
     const adjacentCells = [
-      [row - 1, col],     
-      [row + 1, col],     
-      [row, col - 1],     
-      [row, col + 1]
+      [row - 1, col],
+      [row + 1, col],
+      [row, col - 1],
+      [row, col + 1],
     ];
 
     for (const [r, c] of adjacentCells) {
-      if (r >= 0 && r < 10 && c >= 0 && c < 10 && (gameBoard[r][c] == 0 || gameBoard[r][c] == 1)) {
+      if (
+        r >= 0 &&
+        r < 10 &&
+        c >= 0 &&
+        c < 10 &&
+        (gameBoard[r][c] == 0 || gameBoard[r][c] == 1)
+      ) {
         this.computerTargets.push([r, c]);
       }
     }
@@ -126,22 +122,38 @@ export default class Gamecontroller {
     const enemyBoard = this.playerOneTurn
       ? this.playerTwo.getBoard()
       : this.playerOne.getBoard();
-    const computerAttack = this.playerOneTurn ? [0,0] : this.computerTurn(enemyBoard);
-    const result = this.playerOneTurn ? enemyBoard.receiveAttack(x, y) : enemyBoard.receiveAttack(computerAttack[0], computerAttack[1]);
+    const computerAttack = this.playerOneTurn
+      ? [0, 0]
+      : this.computerTurn(enemyBoard);
+    const result = this.playerOneTurn
+      ? enemyBoard.receiveAttack(x, y)
+      : enemyBoard.receiveAttack(computerAttack[0], computerAttack[1]);
     // game win case, successful case, and unsuccessful case
     if (result === "player wins") {
       this.gameRunning = false;
       return " wins!";
     } else if (result) {
-      const latestAttack = enemyBoard.getLatestAttack()
-      const returnResult = latestAttack.result == 2 ? "hit a ship" : latestAttack.result == 3 ? "missed" : "sunk a ship"
+      const latestAttack = enemyBoard.getLatestAttack();
+      const returnResult =
+        latestAttack.result == 2
+          ? "hit a ship"
+          : latestAttack.result == 3
+          ? "missed"
+          : "sunk a ship";
       // reset coords after sinking a ship
       if (returnResult == "sunk a ship") {
         this.computerTargets = [];
         this.targetMode = false;
         this.huntMode = true;
       }
-      const returnString = " attacked the coords " + latestAttack.coords[0] + ", " + latestAttack.coords[2] + "...and the attack " + returnResult + "!"
+      const returnString =
+        " attacked the coords " +
+        latestAttack.coords[0] +
+        ", " +
+        latestAttack.coords[2] +
+        "...and the attack " +
+        returnResult +
+        "!";
       this.playerOneTurn = !this.playerOneTurn;
       return returnString;
     } else return false;

@@ -32,31 +32,32 @@ export default class planScreen {
 
     const errorMsg = document.createElement("span");
     errorMsg.className = "plan-error-msg";
-    errorMsg.textContent = "You need to place all ships."
+    errorMsg.textContent = "You need to place all ships.";
 
     const planArea = document.createElement("div");
     planArea.className = "plan-area";
 
     const planRules = document.createElement("div");
-    planRules.className = "plan-rules"
-    
-    const ruleTitle = document.createElement('h2')
-    ruleTitle.textContent = "How To Play"
+    planRules.className = "plan-rules";
 
-    const rules = document.createElement('ul');
-    rules.className = 'rules'
+    const ruleTitle = document.createElement("h2");
+    ruleTitle.textContent = "How To Play";
 
-    const ruleOne = document.createElement('li');
-    ruleOne.textContent = "Put a ship on the board by dragging it."
+    const rules = document.createElement("ul");
+    rules.className = "rules";
 
-    const ruleTwo = document.createElement('li');
-    ruleTwo.textContent = "Use the axis buttons to place horizontally or vertically before dragging."
+    const ruleOne = document.createElement("li");
+    ruleOne.textContent = "Put a ship on the board by dragging it.";
 
-    const ruleThree = document.createElement('li');
-    ruleThree.textContent = "Click the reset button to replace all your ships."
+    const ruleTwo = document.createElement("li");
+    ruleTwo.textContent =
+      "Use the axis buttons to place horizontally or vertically before dragging.";
 
-    const ruleFour = document.createElement('li');
-    ruleFour.textContent = "Click random button to randomly place ships."
+    const ruleThree = document.createElement("li");
+    ruleThree.textContent = "Click the reset button to replace all your ships.";
+
+    const ruleFour = document.createElement("li");
+    ruleFour.textContent = "Click random button to randomly place ships.";
 
     const tempBoard = document.createElement("div");
     tempBoard.className = "temp-board";
@@ -102,23 +103,23 @@ export default class planScreen {
     destroyer.dataset.length = "2";
     destroyer.textContent = "Destroyer (2 cells)";
 
-    const functionButtons = document.createElement('div')
-    functionButtons.className = 'function-buttons'
+    const functionButtons = document.createElement("div");
+    functionButtons.className = "function-buttons";
 
-    const resetButton = document.createElement('button')
-    resetButton.className = 'function-button'
-    resetButton.id = 'reset'
-    resetButton.textContent = 'RESET'
+    const resetButton = document.createElement("button");
+    resetButton.className = "function-button";
+    resetButton.id = "reset";
+    resetButton.textContent = "RESET";
 
-    const confirmButton = document.createElement('div')
-    confirmButton.className = 'function-button'
-    confirmButton.id = 'confirm'
-    confirmButton.textContent = 'CONFIRM'
+    const confirmButton = document.createElement("div");
+    confirmButton.className = "function-button";
+    confirmButton.id = "confirm";
+    confirmButton.textContent = "CONFIRM";
 
-    const randomButton = document.createElement('div')
-    randomButton.className = 'function-button'
-    randomButton.id = 'random'
-    randomButton.textContent = 'RANDOM'
+    const randomButton = document.createElement("div");
+    randomButton.className = "function-button";
+    randomButton.id = "random";
+    randomButton.textContent = "RANDOM";
 
     main.appendChild(planScreen);
     planScreen.appendChild(planTitle);
@@ -144,11 +145,10 @@ export default class planScreen {
     draggableShips.appendChild(cruiser);
     draggableShips.appendChild(submarine);
     draggableShips.appendChild(destroyer);
-    planScreen.appendChild(functionButtons)
-    functionButtons.appendChild(resetButton)
+    planScreen.appendChild(functionButtons);
+    functionButtons.appendChild(resetButton);
     functionButtons.appendChild(randomButton);
-    functionButtons.appendChild(confirmButton)
-    
+    functionButtons.appendChild(confirmButton);
   }
 
   drawScreen() {
@@ -177,18 +177,18 @@ export default class planScreen {
     const battleShips = [...document.querySelectorAll(".battle-ship")];
     const dropCells = [...document.querySelectorAll(".temp-cell")];
     const axisButtons = [...document.querySelectorAll("button.axis-button")];
-    const resetButton = document.getElementById('reset')
-    const randomButton = document.getElementById('random')
+    const resetButton = document.getElementById("reset");
+    const randomButton = document.getElementById("random");
     let isXAxis = true;
     let elementBeingDragged = null;
 
-    resetButton.addEventListener('click', (e) => {
-        this.resetBoard()
-    })
+    resetButton.addEventListener("click", (e) => {
+      this.resetBoard();
+    });
 
-    randomButton.addEventListener('click', (e) => {
+    randomButton.addEventListener("click", (e) => {
       this.randomPlacements();
-    })
+    });
 
     axisButtons.forEach((button) => {
       button.addEventListener("click", () => {
@@ -252,7 +252,8 @@ export default class planScreen {
             rowCoord,
             colCoord,
             shipLength,
-            "place", shipID
+            "place",
+            shipID
           );
         } else
           this.updateHighlight(
@@ -316,11 +317,10 @@ export default class planScreen {
           if (i > 9) break;
           else {
             const cellToHighlight = document.getElementById(`${rowCoord},${i}`);
-            if (!cellToHighlight.classList.contains('placed')) {
-                cellToHighlight.classList.add("highlight");
-                cellToHighlight.classList.add(highlightValid);
+            if (!cellToHighlight.classList.contains("placed")) {
+              cellToHighlight.classList.add("highlight");
+              cellToHighlight.classList.add(highlightValid);
             }
-            
           }
         }
       } else {
@@ -340,9 +340,9 @@ export default class planScreen {
           if (i > 9) break;
           else {
             const cellToHighlight = document.getElementById(`${i},${colCoord}`);
-            if (!cellToHighlight.classList.contains('placed')) {
-                cellToHighlight.classList.add("highlight");
-                cellToHighlight.classList.add(highlightValid);
+            if (!cellToHighlight.classList.contains("placed")) {
+              cellToHighlight.classList.add("highlight");
+              cellToHighlight.classList.add(highlightValid);
             }
           }
         }
@@ -399,26 +399,26 @@ export default class planScreen {
   resetBoard() {
     this.boardToSend.resetBoard();
     const errorMsg = document.querySelector(".plan-error-msg");
-    errorMsg.classList.remove("active")
+    errorMsg.classList.remove("active");
 
-    const tempCells = [...document.querySelectorAll('.temp-cell')]
-    tempCells.forEach(cell => {
-        cell.className = 'temp-cell'
-    })
+    const tempCells = [...document.querySelectorAll(".temp-cell")];
+    tempCells.forEach((cell) => {
+      cell.className = "temp-cell";
+    });
 
-    const battleShips = [...document.querySelectorAll('.battle-ship')]
-    battleShips.forEach(battleship => {
-        battleship.className = 'battle-ship'
-    })
+    const battleShips = [...document.querySelectorAll(".battle-ship")];
+    battleShips.forEach((battleship) => {
+      battleship.className = "battle-ship";
+    });
   }
 
   randomPlacements() {
     this.resetBoard();
-    const battleShips = [...document.querySelectorAll('.battle-ship')]
-    battleShips.forEach(battleship => {
-        battleship.className = 'battle-ship placed'
-    })
-    
+    const battleShips = [...document.querySelectorAll(".battle-ship")];
+    battleShips.forEach((battleship) => {
+      battleship.className = "battle-ship placed";
+    });
+
     // code from placeComputerShips function in gameboard module
     const shipLengths = [5, 4, 3, 3, 2];
     let index = 0;
@@ -446,7 +446,7 @@ export default class planScreen {
             if (placed) {
               for (let i = col; i < col + shipLengths[index]; i++) {
                 // updating board
-                const cellToPlaceShip = document.getElementById(`${row},${i}`)
+                const cellToPlaceShip = document.getElementById(`${row},${i}`);
                 this.boardToSend.getBoard()[row][i] = battleShips[index].id;
                 cellToPlaceShip.classList.add("highlight");
                 cellToPlaceShip.classList.add("valid");
@@ -455,21 +455,55 @@ export default class planScreen {
                 // add buffer zone
                 if (i == col) {
                   if (col > 0) {
-                      if (this.boardToSend.getBoard()[row][col - 1] == 0) this.boardToSend.getBoard()[row][col - 1] = -1;
-                      if (row > 0 && this.boardToSend.getBoard()[row - 1][col - 1] == 0) this.boardToSend.getBoard()[row - 1][col - 1] = -1;
-                      if (row < 9 && this.boardToSend.getBoard()[row + 1][col - 1] == 0) this.boardToSend.getBoard()[row + 1][col - 1] = -1;
+                    if (this.boardToSend.getBoard()[row][col - 1] == 0)
+                      this.boardToSend.getBoard()[row][col - 1] = -1;
+                    if (
+                      row > 0 &&
+                      this.boardToSend.getBoard()[row - 1][col - 1] == 0
+                    )
+                      this.boardToSend.getBoard()[row - 1][col - 1] = -1;
+                    if (
+                      row < 9 &&
+                      this.boardToSend.getBoard()[row + 1][col - 1] == 0
+                    )
+                      this.boardToSend.getBoard()[row + 1][col - 1] = -1;
                   }
                 }
                 if (i == col + shipLengths[index] - 1) {
                   if (col + shipLengths[index] < 10) {
-                      if (this.boardToSend.getBoard()[row][col + shipLengths[index]] == 0) this.boardToSend.getBoard()[row][col + shipLengths[index]] = -1;
-                      if (row > 0 && this.boardToSend.getBoard()[row - 1][col + shipLengths[index]] == 0) this.boardToSend.getBoard()[row - 1][col + shipLengths[index]] = -1;
-                      if (row < 9 && this.boardToSend.getBoard()[row + 1][col + shipLengths[index]] == 0) this.boardToSend.getBoard()[row + 1][col + shipLengths[index]] = -1;
+                    if (
+                      this.boardToSend.getBoard()[row][
+                        col + shipLengths[index]
+                      ] == 0
+                    )
+                      this.boardToSend.getBoard()[row][
+                        col + shipLengths[index]
+                      ] = -1;
+                    if (
+                      row > 0 &&
+                      this.boardToSend.getBoard()[row - 1][
+                        col + shipLengths[index]
+                      ] == 0
+                    )
+                      this.boardToSend.getBoard()[row - 1][
+                        col + shipLengths[index]
+                      ] = -1;
+                    if (
+                      row < 9 &&
+                      this.boardToSend.getBoard()[row + 1][
+                        col + shipLengths[index]
+                      ] == 0
+                    )
+                      this.boardToSend.getBoard()[row + 1][
+                        col + shipLengths[index]
+                      ] = -1;
                   }
                 }
-                if (row > 0 && this.boardToSend.getBoard()[row - 1][i] == 0) this.boardToSend.getBoard()[row - 1][i] = -1;
-                if (row < 9 && this.boardToSend.getBoard()[row + 1][i] == 0) this.boardToSend.getBoard()[row + 1][i] = -1;
-              }     
+                if (row > 0 && this.boardToSend.getBoard()[row - 1][i] == 0)
+                  this.boardToSend.getBoard()[row - 1][i] = -1;
+                if (row < 9 && this.boardToSend.getBoard()[row + 1][i] == 0)
+                  this.boardToSend.getBoard()[row + 1][i] = -1;
+              }
               index++;
             }
           }
@@ -479,54 +513,88 @@ export default class planScreen {
             let space = 0;
             for (let i = row; i < row + shipLengths[index]; i++) {
               if (this.boardToSend.getBoard()[i][col] == 0) {
-                space++
+                space++;
               }
             }
 
             if (space == shipLengths[index]) {
-              placed = true
+              placed = true;
             }
 
             if (placed) {
               for (let i = row; i < row + shipLengths[index]; i++) {
-                const cellToPlaceShip = document.getElementById(`${i},${col}`)
+                const cellToPlaceShip = document.getElementById(`${i},${col}`);
                 this.boardToSend.getBoard()[i][col] = battleShips[index].id;
                 cellToPlaceShip.classList.add("highlight");
                 cellToPlaceShip.classList.add("valid");
                 cellToPlaceShip.classList.add("placed");
-                
+
                 // add buffer zone
                 if (i == row) {
                   if (row > 0) {
-                      if (this.boardToSend.getBoard()[row - 1][col] == 0) this.boardToSend.getBoard()[row - 1][col] = -1;
-                      if (col > 0 && this.boardToSend.getBoard()[row - 1][col - 1] == 0) this.boardToSend.getBoard()[row - 1][col - 1] = -1;
-                      if (col < 9 && this.boardToSend.getBoard()[row - 1][col + 1] == 0) this.boardToSend.getBoard()[row - 1][col + 1] = -1;
+                    if (this.boardToSend.getBoard()[row - 1][col] == 0)
+                      this.boardToSend.getBoard()[row - 1][col] = -1;
+                    if (
+                      col > 0 &&
+                      this.boardToSend.getBoard()[row - 1][col - 1] == 0
+                    )
+                      this.boardToSend.getBoard()[row - 1][col - 1] = -1;
+                    if (
+                      col < 9 &&
+                      this.boardToSend.getBoard()[row - 1][col + 1] == 0
+                    )
+                      this.boardToSend.getBoard()[row - 1][col + 1] = -1;
                   }
                 }
                 if (i == row + shipLengths[index] - 1) {
                   if (row + shipLengths[index] < 10) {
-                      if (this.boardToSend.getBoard()[row + shipLengths[index]][col] == 0) this.boardToSend.getBoard()[row + shipLengths[index]][col] = -1;
-                      if (col > 0 && this.boardToSend.getBoard()[row + shipLengths[index]][col - 1] == 0) this.boardToSend.getBoard()[row + shipLengths[index]][col - 1] = -1;
-                      if (col < 9 && this.boardToSend.getBoard()[row + shipLengths[index]][col + 1] == 0) this.boardToSend.getBoard()[row + shipLengths[index]][col + 1] = -1;
+                    if (
+                      this.boardToSend.getBoard()[row + shipLengths[index]][
+                        col
+                      ] == 0
+                    )
+                      this.boardToSend.getBoard()[row + shipLengths[index]][
+                        col
+                      ] = -1;
+                    if (
+                      col > 0 &&
+                      this.boardToSend.getBoard()[row + shipLengths[index]][
+                        col - 1
+                      ] == 0
+                    )
+                      this.boardToSend.getBoard()[row + shipLengths[index]][
+                        col - 1
+                      ] = -1;
+                    if (
+                      col < 9 &&
+                      this.boardToSend.getBoard()[row + shipLengths[index]][
+                        col + 1
+                      ] == 0
+                    )
+                      this.boardToSend.getBoard()[row + shipLengths[index]][
+                        col + 1
+                      ] = -1;
                   }
-                } 
-                if (col > 0 && this.boardToSend.getBoard()[i][col - 1] == 0) this.boardToSend.getBoard()[i][col - 1] = -1;
-                if (col < 9 && this.boardToSend.getBoard()[i][col + 1] == 0) this.boardToSend.getBoard()[i][col + 1] = -1;
+                }
+                if (col > 0 && this.boardToSend.getBoard()[i][col - 1] == 0)
+                  this.boardToSend.getBoard()[i][col - 1] = -1;
+                if (col < 9 && this.boardToSend.getBoard()[i][col + 1] == 0)
+                  this.boardToSend.getBoard()[i][col + 1] = -1;
               }
 
-              index++
+              index++;
             }
           }
-        } 
+        }
       }
     }
 
-    // clean up buffer spots 
+    // clean up buffer spots
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-          if (this.boardToSend.getBoard()[i][j] == -1) {
-              this.boardToSend.getBoard()[i][j] = 0;
-          }
+        if (this.boardToSend.getBoard()[i][j] == -1) {
+          this.boardToSend.getBoard()[i][j] = 0;
+        }
       }
     }
   }

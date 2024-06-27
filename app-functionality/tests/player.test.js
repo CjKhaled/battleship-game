@@ -9,7 +9,7 @@ test("Player object is instantied correctly", () => {
 
 test("Attack function works correctly", () => {
   const testPlayer = new Player(new Gameboard(), "phil");
-  testPlayer.setPlayerTurn(true)
+  testPlayer.setPlayerTurn(true);
   const testPlayer2 = new Player(new Gameboard(), "phil");
 
   expect(testPlayer.attack(testPlayer2.getBoard(), 0, 2)).toBe(true);
