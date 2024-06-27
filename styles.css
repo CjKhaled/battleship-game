@@ -72,12 +72,15 @@ button.submitNames {
 
 .temp.cells {
   cursor: pointer;
+  max-width: 385px;
+  min-width: 385px;
 }
 
 .cells {
   display: flex;
   gap: 5px;
-  width: 385px;
+  max-width: 385px;
+  min-width: 385px;
   flex-direction: row;
   flex-wrap: wrap;
   padding: 20px;
