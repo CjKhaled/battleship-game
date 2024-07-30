@@ -3,8 +3,7 @@
 This is a basic battleship game made with HTML, CSS, and Javascript. It has drag-and-drop functionality for users to place
 their ships, and users battle with an AI to win. I built this project for fun and to gain a deeper understanding of 
 Javascript promises, event listeners, and animations. The hardest part was definitely the drag and drop functionality, with
-building the AI being a close second. I'd like to polish the AI even more, and there is a lot of room to make functions a 
-lot more efficient.
+building the AI being a close second. I'd like to polish the AI even more, and potentially add multiplayer.
 
 ## Getting started
 
